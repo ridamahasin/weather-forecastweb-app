@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Ultimate Weather App</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body class="{{ background }}">
+
+<div class="container">
+
+    <h1>🌦️ Weather App</h1>
+
+    <p class="time">{{ current_time }}</p>
+
+    <button onclick="toggleMode()">🌙 Dark Mode</button>
+
+    <br><br>
+
+    <div id="loader" class="loader"></div>
+
+    <form method="POST">
+
+        <input type="text" name="city" placeholder="Enter city name" required>
+
+        <button type="submit">Search</button>
+
+    </form>
+
+    {% if weather %}
+
+        <div class="weather-box">
+
+            <div class="weather-icon">
+                {{ weather.icon }}
+            </div>
+
+            <h2>{{ weather.city }}, {{ weather.country }}</h2>
+
+            <div class="temp">
+                {{ weather.temperature }}°C
+            </div>
+
+            <h3>{{ weather.condition }}</h3>
+
+            <div class="details">
+
+                <p>💧 Humidity: {{ weather.humidity }}%</p>
+
+                <p>🌡️ Feels Like: {{ weather.feels_like }}°C</p>
+
+                <p>💨 Wind Speed: {{ weather.wind }} km/h</p>
+
+            </div>
+
+            <div class="suggestion">
+                {{ suggestion }}
+            </div>
+
+        </div>
+
+        <h2 class="forecast-title">5-Day Forecast</h2>
+
+        <div class="forecast-container">
+
+            {% for day in forecast %}
+
+            <div class="forecast-card">
+
+                <h4>{{ day.date }}</h4>
+
+                <div class="forecast-icon">
+                    {{ day.icon }}
+                </div>
+
+                <p>{{ day.condition }}</p>
+
+                <p>{{ day.max }}°C / {{ day.min }}°C</p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% endif %}
+
+    {% if error %}
+
+        <div class="error">
+            {{ error }}
+        </div>
+
+    {% endif %}
+
+</div>
+
+<script>
+
+const form = document.querySelector('form');
+
+form.addEventListener('submit', () => {
+    document.getElementById('loader').style.display = 'block';
+});
+
+function toggleMode(){
+    document.body.classList.toggle('dark');
+}
+
+</script>
+
+</body>
+</html>
